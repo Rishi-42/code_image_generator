@@ -12,16 +12,20 @@
     background-color: {{ style_bg_color }};
   }
 </style>
-<form>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector("select").addEventListener("change", () => {
+      document.querySelector("form").submit();
+    });
+  });
+</script>
+<form method="post" action="{{ url_for('save_style') }}">
   <div class="controls">
     <select name="style">
       {% for style_name in all_styles %}
-        <option value="{{ style_name }}">{{ style_name }}</option>
+        <option value="{{ style_name }}" {% if style_name == style %}selected{% endif %} >{{ style_name }}</option>
       {% endfor %}
     </select>
-    <button formmethod="post" formaction="{{ url_for('save_style') }}">
-      Change Style 💅
-    </button>
   </div>
   <div class="code">
     {{ highlighted_code | safe }}
@@ -29,6 +33,9 @@
   <div class="controls">
     <button formmethod="get" formaction="{{ url_for('code') }}">
       ⬅️ Back
+    </button>
+    <button formmethod="get" formaction="{{ url_for('image') }}">
+      Create Image 📸
     </button>
   </div>
 </form>
